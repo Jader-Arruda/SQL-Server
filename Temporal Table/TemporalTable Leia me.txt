@@ -1,0 +1,58 @@
+/****************************************************************************
+Autor: Jader Gabriel Soares de Arruda
+Data: 02-02-2019
+Assunto: tabela temporal com cotação diária do Dolar desde 2000
+****************************************************************************/
+
+Atividade envolve um estudo de caso de uma tabela temporal contendo o preço do dolar de 03-01-2000 até 01-02-2019.
+Como esta novidade cai na prova de certificação, é muito útil porém as chances de usar em ambiente são baixas, foi feito
+este teste para conhecer melhor esta nova funcionalidade.
+
+O arquivo foi baixado do site do BCB
+Dólar comercial (venda e compra) - cotações diárias e Taxas de Câmbio - todos os boletins diários - v1
+https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/aplicacao#!/Moedas#eyJmb3JtdWxhcmlvIjp7IiR0b3AiOjEwMCwiJGZvcm1hdCI6InRleHQvY3N2IiwiJHNraXAiOjF9LCJwcm9wcmllZGFkZXMiOlswLDEsMl19
+do arquivo 'Cotação do Dólar por período.csv' e importado para a pasta e então realizado o ETL via Bulk Insert.
+
+Para fazer as queries foi necessário criar duas tabelas normais separadamente e então alterar para uma tabela temporal com seu histórico, pois uma tabela
+temporal não aceita inserção de valores nas colunas validoDe até ValidoAté, por isso foram criadas duas tabelas normais obedecendo os requisitos de uma tabela
+temporal e então atualizada. 
+
+Para montar o ambiente basta executar o script 'TemporalTable' de uma vez só ou passo a passo para ir acompanhando.
+As etapas seguem listadas e descritas abaixo para uma melhor compreensão. 
+
+Tabela Stage - criada para inserir via bulk insert o CSV. foi necessário criação do PK aqui.
+-Coluna pk
+-Colunas do arquivo CSV com varchar(50)
+
+View Stage - Criado para inserir do bulk insert na tabela stage desconsiderando a coluna PK
+-Para inserir o bulk insert foi necessário a view contendo apenas as colunas originais do CSV
+
+Tabela - Inserido o dado mais recente apenas
+- Coluna PK
+-Colunas do arquivo CSV
+-Coluna ValidoDe e ValidoAté DATETIME2(3) NOT NULL
+
+Tabela Histórico - Inserir todas as entradas menos a mais atual.
+-Mesmas colunas que a da tabela acima, porém sem PK
+-índice Clusterizado (ValidoAté, ValidoDe) WITH (DATA_COMPRESSION = PAGE)
+
+Após as tabelas estarem criadas foram inseridos os registros. O mais atual na tabela definitiva
+e os demais registros na tabela histórico, colocando dados nas colunas ValidoDe e ValidoAté. Um erro que pode acontecer
+nesta hora é ter dados onde as colunas validoDe e ValidoAté entrarão em conflito, isto causará o erro na hora de transformar
+a tabela em temporal, o erro
+'Setting SYSTEM_VERSIONING to ON failed because history table contains overlapping records.'
+
+Com os dados na tabela, é adicionado o period for system_time na tabela e feitas as demais modificações para transformar a tabela em tabela temporal.
+
+Feito isso, a tabela está pronta para os testes.
+
+Ao final, se necessário, possui um trecho que destransforma a tabela de temporal para normal para poder apagá-la. Sem esta alteração, a tabela não pode
+ser apagada ou truncada. Pode apenas ter seus dados deletados mas eles irão para a tabela historico.
+
+O script para criar uma tabela temporal segue no pacote comentado.
+
+Para testar, use o arquivo de queries em anexo.
+
+Fontes:https://blogs.msdn.microsoft.com/sql_pfe_blog/2016/11/01/sql-2016-temporal-tables-what-are-they-and-how-do-you-set-one-up/
+       https://docs.microsoft.com/pt-br/sql/relational-databases/tables/temporal-table-usage-scenarios?view=sql-server-2017
+       Exam Ref 70-761 Querying Data with Transact-SQL ebook.
