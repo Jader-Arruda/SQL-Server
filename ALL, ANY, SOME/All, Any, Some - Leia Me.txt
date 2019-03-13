@@ -1,0 +1,16 @@
+/****************************************************************************
+Autor: Jader Gabriel Soares de Arruda
+Data: 12-03-2019
+Assunto: ALL, ANY, SOME
+****************************************************************************/
+
+There are three underused functions in SQL, they are used near =, <>, >,>=,<=;<.
+They are ALL, Any and Some.
+
+They are equivalents of EXISTS and NOT EXISTS and the same result can be acchieved using
+them.
+Using ALL, Any and Some might be a little overcomplicated so it may be better to use EXISTS and NOT EXISTS to rewrite the query.
+
+Since these questions will appear on the exam its best to be prepared for them.
+This .sql file will give examples on their usages, the results expected and why the result.
+I did this to review the chapter and make sure I fully understood these functions to be prepared for the exam.
