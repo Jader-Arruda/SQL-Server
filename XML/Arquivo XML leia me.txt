@@ -1,0 +1,13 @@
+/****************************************************************************
+Autor: Jader Gabriel Soares de Arruda
+Data: 05-02-2019
+Assunto: Testes de XML com cotação diária de Soja
+****************************************************************************/
+
+Script de teste usado para o estudo da certificação 70-761 com exercícios 
+próprios.
+
+Para execução dos testes e obtenção dos mesmos resultados, abrir o arquivo.sql
+(ArquivoXML.sql), executar o primeiro trecho comentado que criará a tabela caso não exista
+, populará a tabela com cotações diárias de soja e então ir executando os trechos
+fornecidos abaixo. As descrições falam o que cada código executa.

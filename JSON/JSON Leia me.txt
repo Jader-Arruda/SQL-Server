@@ -1,0 +1,14 @@
+/****************************************************************************
+Autor: Jader Gabriel Soares de Arruda
+Data: 08-02-2019
+Assunto: JSON with currency file from BCB
+****************************************************************************/
+
+JSON
+
+This file, json script.sql has scripts testing Json functionalities.
+This is a new SQL implementation and has less implementations than XML.
+Still, its more user friendly than XML, one of the reasons it is spreading.
+There are several functions. To use them, open the sql script and execute
+each step reading the codes. There first part involves a json file also in this file.
+If necessary, change the path to find it to be able to run the tests.

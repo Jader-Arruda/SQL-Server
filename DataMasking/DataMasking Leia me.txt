@@ -1,0 +1,22 @@
+/****************************************************************************
+Autor: Jader Gabriel Soares de Arruda
+Data: 15-04-2019
+Assunto: DataMasking
+****************************************************************************/
+
+This code can be executed in any sql server 2016 and newer version.
+The table and data populated are inside the code.
+There's also one user created for this purpose with the permissions
+needed for test.
+
+There are four types of DataMasking, Default(),Email(),Partial(n,"***",n) and Random(n,n)
+each one with a different purpose. This .sql file uses all of them to show
+how to use them and what they do.
+
+The tables are selected using the master user and also the created for this
+purpose user, to show how the data behave when using them in the scope.
+ 
+There's also one update executed by the created user. This user doesnt have
+permission for viewing the data but it has permission for updating.
+
+Theres also one example of dropping a masked column.
